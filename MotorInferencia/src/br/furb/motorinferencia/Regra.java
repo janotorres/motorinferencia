@@ -35,4 +35,8 @@ public class Regra {
 		this.condicao  = new Condicao(new Expressao(variavelDouble, valor), this.variaveis);
 		return this.condicao;
 	}
+
+	public Condicao getCondicao() {
+		return condicao;
+	}
 }

@@ -1,5 +1,6 @@
 package br.furb.motorinferencia.variavel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Variavel<T> {
@@ -38,6 +39,19 @@ public abstract class Variavel<T> {
 			return this.valores.add(valor);
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		return this.getNome().equals(((Variavel<?>) object).getNome());
+	}
+
+	public List<String> getValores() {	
+		List<String> valores = new ArrayList<String>();
+		for (T valor : this.valores){
+			valores.add(valor.toString());
+		}
+		return valores;
 	}
 	
 	

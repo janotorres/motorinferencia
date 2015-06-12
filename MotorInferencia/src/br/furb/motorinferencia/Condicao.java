@@ -27,6 +27,8 @@ public class Condicao {
 		int index = -1;
 		if ((index = variaveis.indexOf(variavelString)) != -1){
 			variavelString = (VariavelString) variaveis.get(index);
+		} else {
+			variaveis.add(variavelString);
 		}
 		expressoes.add(new Expressao(variavelString, valor, EnumOperadorBooleano.E));
 		return this;
@@ -37,6 +39,8 @@ public class Condicao {
 		int index = -1;
 		if ((index = variaveis.indexOf(variavelDouble)) != -1){
 			variavelDouble = (VariavelDouble) variaveis.get(index);
+		} else {
+			variaveis.add(variavelDouble);
 		}
 		expressoes.add(new Expressao(variavelDouble, valor, EnumOperadorBooleano.E));
 		return this;
@@ -47,6 +51,8 @@ public class Condicao {
 		int index = -1;
 		if ((index = variaveis.indexOf(variavelString)) != -1){
 			variavelString = (VariavelString) variaveis.get(index);
+		} else {
+			variaveis.add(variavelString);
 		}
 		expressoes.add(new Expressao(variavelString, valor, EnumOperadorBooleano.OU));
 		return this;
@@ -57,13 +63,30 @@ public class Condicao {
 		int index = -1;
 		if ((index = variaveis.indexOf(variavelDouble)) != -1){
 			variavelDouble = (VariavelDouble) variaveis.get(index);
+		} else {
+			variaveis.add(variavelDouble);
 		}
 		expressoes.add(new Expressao(variavelDouble, valor, EnumOperadorBooleano.OU));
 		return this;
 	}
 	
 	public void entao(String variavel, String valor) {
-		this.operacao = new Operacao(variavel, valor);
+		VariavelString variavelString = new VariavelString(variavel);
+		int index = -1;
+		if ((index = variaveis.indexOf(variavelString)) != -1){
+			variavelString = (VariavelString) variaveis.get(index);
+		} else {
+			variaveis.add(variavelString);
+		}
+		this.operacao = new Operacao(variavelString, valor);
+	}
+
+	public Operacao getOperacao() {
+		return this.operacao;
+	}
+
+	public List<Expressao> getExpressoes() {
+		return this.expressoes;
 	}
 
 
