@@ -1,9 +1,8 @@
-package br.furb.motorinferencia;
+package br.furb.motorinferencia.variavel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Variavel<T> {
+public abstract class Variavel<T> {
 
 	private String nome;
 	
@@ -33,18 +32,13 @@ public class Variavel<T> {
 		this.objetivo = objetivo;
 		this.valores = valores;
 	}
-	
-	public Variavel(String nome, boolean objetivo) {
-		this(nome, objetivo, new ArrayList<T>());
+
+	public Boolean addValor(T valor){
+		if (!this.valores.contains(valor)){
+			return this.valores.add(valor);
+		}
+		return false;
 	}
 	
-	
-	public Variavel(String nome) {
-		this(nome, false);
-	}
-	public Variavel<T> addValor(T valor){
-		this.valores.add(valor);
-		return this;
-	}
 	
 }

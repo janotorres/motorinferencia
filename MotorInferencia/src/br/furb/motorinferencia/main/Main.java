@@ -4,10 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		MotorInferencia motorInferencia = new MotorInferencia();
-		motorInferencia.novaRegra().se(null).e(null).ou(null).entao(null);
-		motorInferencia.novaRegra().se(null).e(null).ou(null).entao(null);
-		motorInferencia.novaRegra().se(null).e(null).ou(null).entao(null);
-		motorInferencia.novaRegra().se(null).e(null).ou(null).entao(null);
+		motorInferencia.novaRegra().se("comida","fritura").e("tipoalimento", "batata").ou("tipoalimento", "batata").entao("cerveja","kaiser");
 		motorInferencia.setObjetivo("objetivo");
 		motorInferencia.processar();
 		Premissa premissa = null;

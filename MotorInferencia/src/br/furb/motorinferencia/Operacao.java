@@ -1,12 +1,12 @@
 package br.furb.motorinferencia;
 
-public class Operacao<T> {
+public class Operacao {
 	
-	public Variavel<T> variavel;
+	public String variavel;
 	
-	public T valor;
+	public String valor;
 	
-	public Operacao(Variavel<T> variavel, T valor) {
+	public Operacao(String variavel, String valor) {
 		this.variavel = variavel;
 		this.valor = valor;
 	}	
