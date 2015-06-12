@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.furb.motorinferencia.variavel.Variavel;
+import br.furb.motorinferencia.variavel.VariavelDouble;
 import br.furb.motorinferencia.variavel.VariavelString;
 
 public class Condicao {
@@ -31,6 +32,16 @@ public class Condicao {
 		return this;
 	}
 
+	public Condicao e(String variavel, Double valor) {
+		VariavelDouble variavelDouble = new VariavelDouble(variavel);
+		int index = -1;
+		if ((index = variaveis.indexOf(variavelDouble)) != -1){
+			variavelDouble = (VariavelDouble) variaveis.get(index);
+		}
+		expressoes.add(new Expressao(variavelDouble, valor, EnumOperadorBooleano.E));
+		return this;
+	}
+	
 	public Condicao ou(String variavel, String valor) {
 		VariavelString variavelString = new VariavelString(variavel);
 		int index = -1;
@@ -41,6 +52,16 @@ public class Condicao {
 		return this;
 	}
 
+	public Condicao ou(String variavel, Double valor) {
+		VariavelDouble variavelDouble = new VariavelDouble(variavel);
+		int index = -1;
+		if ((index = variaveis.indexOf(variavelDouble)) != -1){
+			variavelDouble = (VariavelDouble) variaveis.get(index);
+		}
+		expressoes.add(new Expressao(variavelDouble, valor, EnumOperadorBooleano.OU));
+		return this;
+	}
+	
 	public void entao(String variavel, String valor) {
 		this.operacao = new Operacao(variavel, valor);
 	}
