@@ -43,4 +43,20 @@ public class Regra {
 	public Condicao getCondicao() {
 		return condicao;
 	}
+
+	public boolean testar() {
+		for (Expressao expressao : this.condicao.getExpressoes()){
+			if (!expressao.testar()){
+				return false;
+			}
+		}
+		return true;
+		
+	}
+
+	public void executaEntao() {
+		Operacao operacao = this.condicao.getOperacao();
+		operacao.getVariavel().setResposta(operacao.getValor());
+		
+	}
 }

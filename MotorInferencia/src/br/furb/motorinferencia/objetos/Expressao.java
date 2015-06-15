@@ -23,9 +23,16 @@ public class Expressao {
 	}
 	
 	
-	public Expressao(Variavel<?> variavel, Object valor, EnumOperadorBooleano enumOp) {
+	public Expressao(VariavelString variavel, String valor, EnumOperadorBooleano enumOp) {
 		this.valor = valor;
 		this.variavel = variavel;
+		((VariavelString) this.variavel).addValor(valor);
+	}
+	
+	public Expressao(VariavelDouble variavel, Double valor, EnumOperadorBooleano enumOp) {
+		this.valor = valor;
+		this.variavel = variavel;
+		((VariavelDouble) this.variavel).addValor(valor);
 	}
 
 	public Object getValor() {
@@ -34,6 +41,13 @@ public class Expressao {
 
 	public Variavel<?> getVariavel() {
 		return variavel;
+	}
+
+	public boolean testar() {
+		if (variavel.getResposta() != null && valor != null)
+			return variavel.getResposta().equals(valor);
+		return false;
+		
 	}
 	
 }

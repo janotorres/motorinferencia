@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.furb.motorinferencia.objetos.Expressao;
 import br.furb.motorinferencia.objetos.Regra;
+import br.furb.motorinferencia.objetos.Resposta;
 import br.furb.motorinferencia.variavel.Variavel;
 
 public class MotorInferencia {
@@ -44,21 +45,31 @@ public class MotorInferencia {
 	}
 
 	public void processar() {
-		
-	
-		for (Regra regra : regras){
-			if (regra.getCondicao().getOperacao().getVariavel().equals(variavelObjetivo)){
-				for (Expressao expressao : regra.getCondicao().getExpressoes()){
-					Variavel<?> variavel = expressao.getVariavel();
-					if (isPremissa(variavel)){
-						Premissa premissa = new Premissa(variavel);
-						if (!this.premissas.contains(premissa)){
-							this.premissas.add(premissa);
-						}
+		List<Regra> regrasObjetivos = findRegraObjetivo();
+		for (Regra regra : regrasObjetivos){
+			for (Expressao  expressao : regra.getCondicao().getExpressoes()){
+				Variavel<?> variavel = expressao.getVariavel();
+				if (isPremissa(variavel)){
+					Premissa premissa = new Premissa(variavel, regra);
+					int index = -1;
+					if ((index = premissas.indexOf(premissa)) == -1){
+						this.premissas.add(0, premissa);
+					} else {
+						this.premissas.get(index).getRegras().add(regra);
 					}
 				}
 			}
 		}
+	}
+	
+	private List<Regra> findRegraObjetivo(){
+		List<Regra> regrasObjetivos = new ArrayList<Regra>();
+		for (Regra regra : regras){
+			if (regra.getCondicao().getOperacao().getVariavel().equals(variavelObjetivo)){
+				regrasObjetivos.add(regra);
+			}
+		}
+		return regrasObjetivos;
 	}
 	
 	private boolean isPremissa(Variavel<?> variavel) {
@@ -81,6 +92,20 @@ public class MotorInferencia {
 	}
 
 	public void setPremissa(Premissa premissa) {
+		for (Regra regra : premissa.getRegras()){
+			if (regra.testar()){
+				regra.executaEntao();
+			}
+		}
+		
+		if (variavelObjetivo.getResposta() != null){
+			this.premissas.clear();
+		}
+		
+	}
+
+	public Resposta getResposta() {
+		return new Resposta(variavelObjetivo);
 		
 	}
 

@@ -5,9 +5,9 @@ import br.furb.motorinferencia.variavel.VariavelString;
 
 public class Operacao {
 	
-	public Variavel<?> variavel;
+	private Variavel<?> variavel;
 	
-	public String valor;
+	private String valor;
 	
 	public Operacao(VariavelString variavelString, String valor) {
 		this.variavel = variavelString;
@@ -16,6 +16,10 @@ public class Operacao {
 
 	public Variavel<?> getVariavel() {
 		return this.variavel;
-	}	
+	}
+	
+	public String getValor() {
+		return this.valor;
+	}
 
 }

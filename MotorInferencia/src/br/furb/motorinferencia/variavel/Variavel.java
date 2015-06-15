@@ -11,6 +11,8 @@ public abstract class Variavel<T> {
 	
 	private List<T> valores;
 
+	private String resposta;
+
 	public String getNome() {
 		return nome;
 	}
@@ -52,6 +54,15 @@ public abstract class Variavel<T> {
 			valores.add(valor.toString());
 		}
 		return valores;
+	}
+
+	public void setResposta(String resposta) {
+		this.resposta = resposta;
+		
+	}
+
+	public String getResposta() {
+		return this.resposta;
 	}
 	
 	

@@ -1,42 +1,52 @@
 package br.furb.motorinferencia.main;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import br.furb.motorinferencia.objetos.Regra;
 import br.furb.motorinferencia.variavel.Variavel;
 
 public class Premissa {
 
-	private String resposta;
+	//private String resposta;
 	
-	private List<String> opcoes;
+///	private List<String> opcoes;
 
-	private String pergunta;
+	//private String pergunta;
 
-	public Premissa(Variavel<?> variavel) {
-		this.pergunta = variavel.getNome();
-		this.opcoes = variavel.getValores();
+	private Variavel<?> variavel;
+
+	private List<Regra> regras = new ArrayList<Regra>();
+
+	public Premissa(Variavel<?> variavel, Regra regra) {
+		this.variavel = variavel;
+		this.regras.add(regra);
 	}
 
 	public String getPergunta() {
-		return this.pergunta;
+		return this.variavel.getNome();
 	}
 
 	public List<String> getOpcoes() {
-		return this.opcoes;
+		return this.variavel.getValores();
 	}
 
 	public void setResposta(String resposta) throws Exception {
-		if (!this.opcoes.contains(resposta))
+		if (!this.variavel.getValores().contains(resposta))
 			throw new Exception("Resposta inexistente");
-		this.resposta = resposta;		
+		this.variavel.setResposta(resposta);		
 	}
 	
 	public String getResposta() {
-		return this.resposta;		
+		return this.variavel.getResposta();		
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return this.pergunta.equals(((Premissa) obj).getPergunta());
+		return this.getPergunta().equals(((Premissa) obj).getPergunta());
+	}
+
+	public List<Regra> getRegras() {
+		return this.regras;
 	}
 }
