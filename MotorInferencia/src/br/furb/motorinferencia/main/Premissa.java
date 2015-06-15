@@ -10,19 +10,24 @@ public class Premissa {
 	
 	private List<String> opcoes;
 
+	private String pergunta;
+
 	public Premissa(Variavel<?> variavel) {
+		this.pergunta = variavel.getNome();
 		this.opcoes = variavel.getValores();
 	}
 
 	public String getPergunta() {
-		return null;
+		return this.pergunta;
 	}
 
 	public List<String> getOpcoes() {
 		return this.opcoes;
 	}
 
-	public void setResposta(String resposta) {
+	public void setResposta(String resposta) throws Exception {
+		if (!this.opcoes.contains(resposta))
+			throw new Exception("Resposta inexistente");
 		this.resposta = resposta;		
 	}
 	
@@ -30,4 +35,8 @@ public class Premissa {
 		return this.resposta;		
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		return this.pergunta.equals(((Premissa) obj).getPergunta());
+	}
 }
