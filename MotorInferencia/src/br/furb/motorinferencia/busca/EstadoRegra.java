@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import br.furb.motorinferencia.main.MotorInferencia;
+import br.furb.motorinferencia.motor.MotorInferencia;
 import br.furb.motorinferencia.objetos.Expressao;
 import br.furb.motorinferencia.objetos.Regra;
 import br.furb.motorinferencia.variavel.Variavel;
@@ -19,6 +19,8 @@ public class EstadoRegra implements Estado {
 	private MotorInferencia motorInferencia;
 
 	private Regra regra;
+
+	private EstadoRegra antecessor;
 	
 	public static Scanner getScanner(){
 		return new Scanner(System.in);
@@ -30,9 +32,10 @@ public class EstadoRegra implements Estado {
 		this.sucessores = new ArrayList<Estado>();
 	}
 
-	public EstadoRegra(MotorInferencia motorInferencia, Regra regra){
+	public EstadoRegra(MotorInferencia motorInferencia, Regra regra, EstadoRegra antecessor){
 		this.motorInferencia = motorInferencia;
 		this.regra = regra;
+		this.antecessor = antecessor;
 		this.sucessores = new ArrayList<Estado>();
 	}
 
@@ -59,30 +62,36 @@ public class EstadoRegra implements Estado {
 	private void geraSucessores() {
 		for (Regra regra : motorInferencia.getRegras()){
 			if (regra.getCondicao().getOperacao().getVariavel().equals(this.variavel)){
-				this.sucessores.add(new EstadoRegra(this.motorInferencia, regra));
+				this.sucessores.add(new EstadoRegra(this.motorInferencia, regra, this));
 			}
 		}
 	}
 	
 	private void geraSucessoresRegra() {
+		boolean variavelGerouSucessor = false;
 		for (Regra regra : motorInferencia.getRegras()){
 			laco: for(Expressao expressao : this.regra.getCondicao().getExpressoes()){
 				Variavel<?> variavel = expressao.getVariavel();
-				boolean variavelGerouSucessor = false;
 				if (variavel.getResposta() == null){
 					if (regra.getCondicao().getOperacao().getVariavel().equals(variavel)){
-						this.sucessores.add(new EstadoRegra(this.motorInferencia, regra));
+						this.sucessores.add(new EstadoRegra(this.motorInferencia, regra, this));
 						variavelGerouSucessor = true;
 					}
 				} else {
-					if (!expressao.testar()){
+					if (!expressao.testar() && !regra.hasOr()){
 						break laco;
 					}
 					continue;
 				}
 				if (!variavelGerouSucessor){
 					inputVariavel(variavel);
-					if (!expressao.testar()){
+					if (this.antecessor != null){
+						for(Estado estado : this.antecessor.sucessores()){
+							EstadoRegra estadoRegra = (EstadoRegra) estado;
+							estadoRegra.executar();
+						}
+					}
+					if (!expressao.testar() && !regra.hasOr()){
 						break laco;
 					}
 				}
@@ -90,8 +99,13 @@ public class EstadoRegra implements Estado {
 		}
 	}
 	
+	private void executar() {
+		this.regra.tryExecutaEntao();
+		
+	}
+
 	private void inputVariavel(Variavel<?>  variavel){
-		System.out.println("Pergunta: " + variavel.getNome());
+		System.out.println("Pergunta: " + variavel.getPergunta());
 		System.out.println("Opções");
 		for (String opcoes : variavel.getValores()){
 			System.out.println(opcoes);
@@ -108,6 +122,8 @@ public class EstadoRegra implements Estado {
 			}
 		}
 	}
+	
+
 
 
 }

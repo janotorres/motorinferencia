@@ -10,6 +10,8 @@ public class Expressao {
 	
 	private Object valor;
 
+	private EnumOperadorBooleano enumOp = EnumOperadorBooleano.E;
+
 	public Expressao(VariavelString variavel, String valor) {
 		this.valor = valor;
 		this.variavel = variavel;
@@ -26,12 +28,14 @@ public class Expressao {
 	public Expressao(VariavelString variavel, String valor, EnumOperadorBooleano enumOp) {
 		this.valor = valor;
 		this.variavel = variavel;
+		this.enumOp = enumOp;
 		((VariavelString) this.variavel).addValor(valor);
 	}
 	
 	public Expressao(VariavelDouble variavel, Double valor, EnumOperadorBooleano enumOp) {
 		this.valor = valor;
 		this.variavel = variavel;
+		this.enumOp = enumOp;
 		((VariavelDouble) this.variavel).addValor(valor);
 	}
 
@@ -39,13 +43,23 @@ public class Expressao {
 		return valor;
 	}
 
+	public EnumOperadorBooleano getEnumOp() {
+		return enumOp;
+	}
+	
 	public Variavel<?> getVariavel() {
 		return variavel;
 	}
 
 	public boolean testar() {
-		if (variavel.getResposta() != null && valor != null)
-			return variavel.getResposta().equals(valor);
+		if (variavel.getResposta() != null && valor != null){
+			if (variavel instanceof VariavelString){
+				return variavel.getResposta().equals(valor);
+			} else {
+				return Double.valueOf(variavel.getResposta()).equals(valor);
+			}
+			
+		}
 		return false;
 		
 	}

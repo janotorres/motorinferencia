@@ -45,12 +45,21 @@ public class Regra {
 	}
 
 	public boolean testar() {
+		boolean valor = true;
 		for (Expressao expressao : this.condicao.getExpressoes()){
-			if (!expressao.testar()){
-				return false;
+			switch (expressao.getEnumOp()) {
+			case OU:
+				valor = valor || expressao.testar();
+				break;
+			case E:
+				valor = valor && expressao.testar();
+				break;
+			default:
+				break;
 			}
+
 		}
-		return true;
+		return valor;
 		
 	}
 
@@ -65,8 +74,8 @@ public class Regra {
 			if (this.testar()){
 				executaEntao();
 			}
-		} catch (Exception e){
-			System.out.println(e.getMessage());
+		} catch (Exception e){ 
+			
 		}
 	}
 	
@@ -75,4 +84,13 @@ public class Regra {
 		return "Regra:["+condicao.toString()+"]";
 	}
 	
+	
+	public boolean hasOr(){
+		for (Expressao expressao : this.condicao.getExpressoes()){
+			if (EnumOperadorBooleano.OU.equals(expressao.getEnumOp())){
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -13,6 +13,8 @@ public abstract class Variavel<T> {
 
 	private String resposta;
 
+	private String pergunta;
+
 	public String getNome() {
 		return nome;
 	}
@@ -51,7 +53,7 @@ public abstract class Variavel<T> {
 	public List<String> getValores() {	
 		List<String> valores = new ArrayList<String>();
 		for (T valor : this.valores){
-			valores.add(valor.toString());
+			valores.add(valor != null ? valor.toString() : null);
 		}
 		return valores;
 	}
@@ -65,6 +67,14 @@ public abstract class Variavel<T> {
 
 	public String getResposta() {
 		return this.resposta;
+	}
+
+	public void setPergunta(String pergunta) {
+		this.pergunta = pergunta;
+	}
+	
+	public String getPergunta() {
+		return this.pergunta != null ? this.pergunta : this.nome;
 	}
 	
 	
