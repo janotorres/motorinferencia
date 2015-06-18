@@ -20,5 +20,10 @@ public class Resposta {
 	public String getResposta() {
 		return this.resposta;
 	}
+	
+	@Override
+	public String toString() {
+		return "Resposta:[nome:"+this.nome+",resposta:"+this.resposta+"]";
+	}
 
 }

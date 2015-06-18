@@ -10,8 +10,7 @@ import br.furb.motorinferencia.variavel.VariavelString;
 public class Condicao {
 
 	private List<Expressao> expressoes;
-	
-	@SuppressWarnings("unused")
+
 	private Operacao operacao;
 
 	private List<Variavel<?>> variaveis;
@@ -89,5 +88,9 @@ public class Condicao {
 		return this.expressoes;
 	}
 
+	@Override
+	public String toString() {
+		return "Condicao:["+this.expressoes.toString()+"]" ;
+	}
 
 }

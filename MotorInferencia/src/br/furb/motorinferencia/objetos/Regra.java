@@ -54,9 +54,25 @@ public class Regra {
 		
 	}
 
-	public void executaEntao() {
+	public void executaEntao() throws Exception {
 		Operacao operacao = this.condicao.getOperacao();
 		operacao.getVariavel().setResposta(operacao.getValor());
 		
 	}
+
+	public void tryExecutaEntao() {
+		try {
+			if (this.testar()){
+				executaEntao();
+			}
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	@Override
+	public String toString() {	
+		return "Regra:["+condicao.toString()+"]";
+	}
+	
 }

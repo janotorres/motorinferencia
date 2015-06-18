@@ -50,4 +50,8 @@ public class Expressao {
 		
 	}
 	
+	@Override
+	public String toString(){
+		return "Expressao:[variavel:"+this.variavel.getNome()+",valor:"+this.valor+"]";
+	}
 }

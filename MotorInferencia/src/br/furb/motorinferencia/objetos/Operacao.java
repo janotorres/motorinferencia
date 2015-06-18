@@ -12,6 +12,7 @@ public class Operacao {
 	public Operacao(VariavelString variavelString, String valor) {
 		this.variavel = variavelString;
 		this.valor = valor;
+		((VariavelString) this.variavel).addValor(valor);
 	}
 
 	public Variavel<?> getVariavel() {

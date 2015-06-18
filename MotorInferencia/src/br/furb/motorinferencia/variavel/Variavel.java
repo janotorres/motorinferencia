@@ -56,7 +56,9 @@ public abstract class Variavel<T> {
 		return valores;
 	}
 
-	public void setResposta(String resposta) {
+	public void setResposta(String resposta) throws Exception {
+		if (!this.getValores().contains(resposta))
+			throw new Exception("Resposta inexistente");
 		this.resposta = resposta;
 		
 	}

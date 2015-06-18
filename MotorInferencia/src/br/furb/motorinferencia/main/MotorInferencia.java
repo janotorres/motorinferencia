@@ -3,10 +3,11 @@ package br.furb.motorinferencia.main;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.furb.motorinferencia.objetos.Expressao;
+import br.furb.motorinferencia.busca.EstadoRegra;
 import br.furb.motorinferencia.objetos.Regra;
 import br.furb.motorinferencia.objetos.Resposta;
 import br.furb.motorinferencia.variavel.Variavel;
+import busca.BuscaProfundidade;
 
 public class MotorInferencia {
 
@@ -17,12 +18,13 @@ public class MotorInferencia {
 	
 	private List<Premissa> premissas;
 
-	private Variavel<?> variavelObjetivo;
+	private List<Variavel<?>> variaveisObjetivo;
 	
 	public MotorInferencia() {
 		this.regras = new ArrayList<Regra>();
 		this.variaveis = new ArrayList<Variavel<?>>();
 		this.premissas = new ArrayList<Premissa>();
+		this.variaveisObjetivo = new ArrayList<Variavel<?>>();
 	}
 	
 	public Regra novaRegra() {
@@ -31,55 +33,27 @@ public class MotorInferencia {
 		return regra;
 	}
 
-	public void setObjetivo(String variavelObjetivo) throws Exception {
-		for (Variavel<?> variavel : variaveis){
-			if (variavel.getNome().equals(variavelObjetivo)){
-				variavel.setObjetivo(true);
-				this.variavelObjetivo = variavel;
-				return;
+	public void setObjetivo(String... variaveisObjetivo) throws Exception {
+		laco : for (String variavelObjetivo : variaveisObjetivo){
+			
+			for (Variavel<?> variavel : variaveis){
+				if (variavel.getNome().equals(variavelObjetivo)){
+					variavel.setObjetivo(true);
+					this.variaveisObjetivo.add(variavel);
+					continue laco;
+				}
 			}
+			throw new Exception("Não existe a váriavel"+variavelObjetivo);
 		}
-		
-		throw new Exception("Não existe a váriavel"+variavelObjetivo);
-	
 	}
 
 	public void processar() {
-		List<Regra> regrasObjetivos = findRegraObjetivo();
-		for (Regra regra : regrasObjetivos){
-			for (Expressao  expressao : regra.getCondicao().getExpressoes()){
-				Variavel<?> variavel = expressao.getVariavel();
-				if (isPremissa(variavel)){
-					Premissa premissa = new Premissa(variavel, regra);
-					int index = -1;
-					if ((index = premissas.indexOf(premissa)) == -1){
-						this.premissas.add(0, premissa);
-					} else {
-						this.premissas.get(index).getRegras().add(regra);
-					}
-				}
-			}
+		for(Variavel<?> variavelObjetivo : variaveisObjetivo){
+			EstadoRegra estadoRegra = new EstadoRegra(this, variavelObjetivo);
+			BuscaProfundidade busca = new BuscaProfundidade();
+			busca.busca(estadoRegra);			
 		}
-	}
-	
-	private List<Regra> findRegraObjetivo(){
-		List<Regra> regrasObjetivos = new ArrayList<Regra>();
-		for (Regra regra : regras){
-			if (regra.getCondicao().getOperacao().getVariavel().equals(variavelObjetivo)){
-				regrasObjetivos.add(regra);
-			}
-		}
-		return regrasObjetivos;
-	}
-	
-	private boolean isPremissa(Variavel<?> variavel) {
-		for (Regra regra : regras){
-			if (regra.getCondicao().getOperacao().getVariavel().equals(variavel)){
-				return false;
-			}
-		}
-		return true;
-		
+
 	}
 
 	public Premissa obterPremissa() {
@@ -91,21 +65,26 @@ public class MotorInferencia {
 		}
 	}
 
-	public void setPremissa(Premissa premissa) {
-		for (Regra regra : premissa.getRegras()){
-			if (regra.testar()){
-				regra.executaEntao();
+	public List<Resposta> getResposta() {
+		List<Resposta> respostas = new ArrayList<Resposta>();
+		for (Variavel<?> variavelObjetivo : variaveisObjetivo){
+			respostas.add(new Resposta(variavelObjetivo));
+		}
+		return respostas;
+	}
+
+	public List<Regra> getRegras() {
+		return this.regras;
+	}
+	
+	public boolean reachGoal(){
+		for (Variavel<?> variavelObjetivo : variaveisObjetivo){
+			if (variavelObjetivo.getResposta() == null){
+				return false;
 			}
 		}
 		
-		if (variavelObjetivo.getResposta() != null){
-			this.premissas.clear();
-		}
-		
-	}
-
-	public Resposta getResposta() {
-		return new Resposta(variavelObjetivo);
+		return true;
 		
 	}
 
