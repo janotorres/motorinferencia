@@ -61,7 +61,6 @@ public class Expressao {
 			
 		}
 		return false;
-		
 	}
 	
 	@Override

@@ -1,11 +1,12 @@
 package br.furb.motorinferencia;
 
 import br.furb.motorinferencia.motor.MotorInferencia;
+import br.furb.motorinferencia.motor.MotorInferenciaIntf;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		MotorInferencia motorInferencia = new MotorInferencia();
+		/*MotorInferencia motorInferencia = new MotorInferencia();
 		motorInferencia.novaRegra().se("azeite", 0d).entao("tipocomida","fritura");
 		motorInferencia.novaRegra().se("azeite", 1d).entao("tipocomida", null);
 		motorInferencia.novaRegra().se("tipocomida","fritura").e("fritura","peixe").entao("cerveja","kaiser");
@@ -14,7 +15,8 @@ public class Main {
 		motorInferencia.novaRegra().se("tipocomida","carne").e("carne","boi").entao("cerveja","heinekken");
 		motorInferencia.setDescricaoPergunta("azeite",  "Você gosta de azeite?");
 		motorInferencia.setDescricaoPergunta("fritura", "Que alimento frito você mais gosta?");
-		motorInferencia.setObjetivo("cerveja");
+		motorInferencia.setObjetivo("cerveja");*/
+		MotorInferenciaIntf motorInferencia = MotorInferencia.load(ClassLoader.getSystemResourceAsStream("br/furb/motorinferencia/xml/regra.xml"));
 		motorInferencia.processar();
 		System.out.println(motorInferencia.getResposta());
 	}

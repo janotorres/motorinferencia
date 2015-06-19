@@ -52,4 +52,7 @@
 			<valor>skol</valor>
 		</entao>
 	</regra>
+	<variaveisObjetivo>
+		<variavelObjetivo>cerveja</variavelObjetivo>
+	</variaveisObjetivo>
 </regras>

@@ -90,7 +90,7 @@ public class Condicao {
 
 	@Override
 	public String toString() {
-		return "Condicao:["+this.expressoes.toString()+"]" ;
+		return "Condicao:[expressoes:["+this.expressoes.toString()+"],operacao:["+this.operacao.toString()+"]]" ;
 	}
 
 }

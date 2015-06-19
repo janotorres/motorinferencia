@@ -22,5 +22,10 @@ public class Operacao {
 	public String getValor() {
 		return this.valor;
 	}
+	
+	public String toString() {
+		return "variavel:"+variavel.getNome()+",valor:"+this.valor;
+		
+	}
 
 }
